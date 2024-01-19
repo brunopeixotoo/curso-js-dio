@@ -28,7 +28,7 @@ body {
 
 .pokemons {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -83,13 +83,13 @@ body {
         flex-direction: row;
 }
 
-@media screen and (min-width: 380px){
+@media screen and (min-width: 410px){
     .pokemons {
         grid-template-columns: 1fr 1fr;
     }
 }
 
-@media screen and (min-width: 576px){
+@media screen and (min-width: 610px){
     .pokemons {
         grid-template-columns: 1fr 1fr 1fr;
     }
