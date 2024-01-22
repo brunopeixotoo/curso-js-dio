@@ -1,39 +1,52 @@
 
-function convertPokemonTypesToLi(pokemonTypes) {
-    return pokemonTypes.map((typeSlot) =>'<li class="type">' + typeSlot.type.name + '</li>')}
+const pokemonList = document.getElementById('pokemonList')
+const loadMoreButton = document.getElementById('loadMoreButton')
+
+const maxRecord = 100;
+const limit = 10;
+let offset = 0;
 
 
-function pokemonId(pokemon) {
-    return `
-        <li class="pokemon">
-            <span class="number">#${pokemon.id}</span>
-            <span class="name">${pokemon.name}</span>
 
-            <div class="detail">
-                <ol class="types">
-                    ${convertPokemonTypesToLi(pokemon.types).join('')}
-                </ol>
 
-                <img src="${pokemon.sprites.other.dream_world.front_default}" 
-                    alt="${pokemon.name}">
-            </div>
-        </li>
-    `
+function loadPokemonItens(offset, limit) {
+    pokeApi.getPokemons(offset, limit).then((pokemons = []) => {
+        const novoHtml = pokemons.map((pokemon) => `
+                <li class="pokemon ${pokemon.type}">
+                    <span class="number">#${pokemon.number}</span>
+                    <span class="name">${pokemon.name}</span>
+        
+                    <div class="detail">
+                        <ol class="types">
+                            ${pokemon.types.map((type) => `<li class="type ${type}">${type}</li>`).join('')}
+                        </ol>
+        
+                        <img src="${pokemon.photo}" 
+                            alt="${pokemon.name}">
+                    </div>
+                </li>
+            `).join('')
+            pokemonList.innerHTML += novoHtml
+    });
 }
 
-const pokemonList = document.getElementById('pokemonList')
+loadPokemonItens(offset, limit)
 
-pokeApi.getPokemons().then((pokemons = []) => {
+loadMoreButton.addEventListener('click', () => {
+    offset += limit;
+    const qtdRecordDaProximaPag = offset + limit
 
-    const novaList = pokemons.map((pokemon) => pokemonId(pokemon))
+    if (qtdRecordDaProximaPag >= maxRecord) {
+        const novoLimite = maxRecord - offset
+        loadPokemonItens(offset, novoLimite)
 
-    const novoHtml = novaList.join('')
+        loadMoreButton.parentElement.removeChild(loadMoreButton)
+    }else{
+        loadPokemonItens(offset, limit)
+    }
 
-    pokemonList.innerHTML += novoHtml
-
-})
-    
-
+    loadPokemonItens(offset, limit)
+});
         
         
     
