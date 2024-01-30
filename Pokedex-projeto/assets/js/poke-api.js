@@ -12,8 +12,7 @@ function convertPokeApiDetailToPokemon(pokerDetail) {
     pokemon.types = types
     pokemon.type = type
 
-    pokemon.photo = pokerDetail.sprites.other.dream_world.front_default
-
+    pokemon.photo = pokerDetail.sprites.other["official-artwork"].front_default
     return pokemon
 }
 
